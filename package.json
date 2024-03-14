@@ -1,0 +1,21 @@
+{
+  "name": "alesafe",
+  "version": "0.0.1",
+  "description": "Alesafe, a CLI password manager.",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "node -r ts-node/register index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "CLI"
+  ],
+  "author": "Kevin Alemi",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.27",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.2"
+  }
+}
