@@ -1,31 +1,40 @@
 import { FileDetector } from "../detector/filedetector";
 import { AleSafeFull, Credential } from "../models/aleSafeTypes";
 import fs from "fs";
+import { AleSafeSecurityService } from "../security/security";
 
 export class AleSafeManager {
   private fd: FileDetector;
+  private securityService: AleSafeSecurityService;
 
-  constructor(fd: FileDetector) {
+  constructor(fd: FileDetector, securityService: AleSafeSecurityService) {
     this.fd = fd;
+    this.securityService = securityService;
   }
 
-  public addPasswordEntry(credentialToAdd: Credential) {
-    this.writeEntry(credentialToAdd);
+  public addPasswordEntry(credentialToAdd: Credential, mPw: string) {
+    this.writeEntry(credentialToAdd, mPw);
   }
 
-  // Setup encryption of each credentials password.
-  // When running the app the user provides password and can get the password in plaintext.
-  // Otherwise write each credential entry encrypted too.
-  private writeEntry(credentialToAdd: Credential): void {
-    const file: string = fs.readFileSync(this.fd.getAlesafeFile()).toString();
-
-    const aleSafeConfig: AleSafeFull = JSON.parse(file);
+  private writeEntry(credentialToAdd: Credential, mPw: string): void {
+    const aleSafeConfig: AleSafeFull = this.fd.getAleSafeFileContent();
 
     if (this.isDupelicate(credentialToAdd, aleSafeConfig)) {
       return;
     }
 
-    aleSafeConfig.credentials.push(credentialToAdd);
+    const encryptPw = this.securityService.setupCredentialPassword(
+      credentialToAdd.password,
+      mPw,
+      aleSafeConfig.aleSafeSecurity
+    );
+
+    const encryptedCredentials: Credential = {
+      ...credentialToAdd,
+      password: encryptPw,
+    };
+
+    aleSafeConfig.credentials.push(encryptedCredentials);
 
     fs.writeFileSync(
       this.fd.getAlesafeFile(),
