@@ -1,0 +1,24 @@
+{
+  "alesafeSecurity": {
+    "masterPasswordHash": "e6271d506c0b2d04c71961a63e2c1515da81fb5b542e4d0dc3b60a0743b1635cb7563c4649a04f69c332b22cfde21f195ee0f6a7605aa94769a88e862c92fc77",
+    "salt": "f2e6ac4c4411b89cbe858897724aaa6f",
+    "iterationCount": 1000
+  },
+  "credentials": [
+    {
+      "website": "gitlab",
+      "username": "kevkev",
+      "password": "hunter2"
+    },
+    {
+      "website": "gitlab2",
+      "username": "kevkev2",
+      "password": "hunter22"
+    },
+    {
+      "website": "gitlab3",
+      "username": "kevkev3",
+      "password": "hunter33"
+    }
+  ]
+}
