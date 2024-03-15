@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import os from "os";
 
-import { AleSafeSecurity } from "../models/aleSafeTypes";
+import { AleSafeFull, AleSafeSecurity } from "../models/aleSafeTypes";
 import { AleSafeError } from "../models/AlesafeError";
 
 export class FileDetector {
@@ -10,7 +10,15 @@ export class FileDetector {
   private readonly alesafeDirName: string = ".alesafe";
   private readonly alesafeFileName: string = ".alexp.json";
 
-  // Public method for fetching the alesafe file.
+  // Purpose: Fetches the file and reads it into our type.
+  public getAleSafeFileContent(): AleSafeFull {
+    const file: string = this.getAlesafeFile();
+    const content: string = fs.readFileSync(file).toString();
+
+    return JSON.parse(content) as AleSafeFull;
+  }
+
+  // Public method for fetching the alesafe file path.
   public getAlesafeFile(): string {
     const fetchedFiled: [string, boolean] = this.fetchFile();
 
