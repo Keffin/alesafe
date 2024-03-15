@@ -6,7 +6,7 @@ import { Credential } from "./models/aleSafeTypes";
 
 const fd: FileDetector = new FileDetector();
 const sec: AleSafeSecurityService = new AleSafeSecurityService();
-const aleSafeManager: AleSafeManager = new AleSafeManager(fd);
+const aleSafeManager: AleSafeManager = new AleSafeManager(fd, sec);
 
 const aleSafeLoop: AlesafeLoop = new AlesafeLoop(fd, sec, aleSafeManager);
 const allSafeMasterPassword = "kevkev42";
@@ -29,8 +29,19 @@ const credentialThree: Credential = {
   password: "hunter5",
 };
 
-aleSafeLoop.handle(credentialThree, "invalid password");
-//alesafeLoop.handle(credentialTwo, allSafeMasterPassword);
-//alesafeLoop.handle(credentialOne, allSafeMasterPassword);
-//alesafeLoop.handle(credentialOne, allSafeMasterPassword);
+const credFour: Credential = {
+  website: "gitlab6",
+  username: "kevkevk6",
+  password: "hunter6",
+};
+
+//aleSafeLoop.handle(credFour, allSafeMasterPassword);
+//aleSafeLoop.getPwPlain(allSafeMasterPassword);
+
+/*aleSafeLoop.handle(credentialOne, allSafeMasterPassword);
+aleSafeLoop.handle(credentialTwo, allSafeMasterPassword);
+aleSafeLoop.handle(credentialThree, allSafeMasterPassword);
+aleSafeLoop.handle(credFour, allSafeMasterPassword);*/
+
+console.log(aleSafeLoop.getPwPlain(allSafeMasterPassword, "gitlab5"));
 // During first run if missing; User prompts to input master password, and the dir + file is created.
