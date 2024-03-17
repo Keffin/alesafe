@@ -11,7 +11,7 @@ import {
   AleSafeFull,
   AleSafeSecurity,
   Credential,
-} from "../models/aleSafeTypes";
+} from "../models/AleSafeTypes";
 
 export class AleSafeSecurityService {
   private readonly iterationCount: number = 1000;

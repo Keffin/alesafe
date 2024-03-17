@@ -5,6 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "tsc",
+    "start-dev": "ts-node --files index.ts",
     "dev": "node -r ts-node/register index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,5 +18,8 @@
     "@types/node": "^20.11.27",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2"
+  },
+  "dependencies": {
+    "commander": "^12.0.0"
   }
 }

@@ -1,9 +1,8 @@
 import fs from "fs";
 import path from "path";
 import os from "os";
-
-import { AleSafeFull, AleSafeSecurity } from "../models/aleSafeTypes";
-import { AleSafeError } from "../models/AlesafeError";
+import { AleSafeFull, AleSafeSecurity } from "../models/AleSafeTypes";
+import { AleSafeError } from "../models/AleSafeError";
 
 export class FileDetector {
   private readonly homeDir: string = os.homedir();

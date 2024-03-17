@@ -1,11 +1,11 @@
 import { FileDetector } from "./detector/filedetector";
 import { AleSafeManager } from "./manager/alesafemanager";
-import { AleSafeError } from "./models/AlesafeError";
+import { AleSafeError } from "./models/AleSafeError";
 import {
   AleSafeFull,
   AleSafeSecurity,
   Credential,
-} from "./models/aleSafeTypes";
+} from "./models/AleSafeTypes";
 import { AleSafeSecurityService } from "./security/security";
 
 export class AlesafeLoop {
@@ -23,7 +23,33 @@ export class AlesafeLoop {
     this.aleSafeManager = aleSafeManager;
   }
 
+  public getAllPw(pw: string): Credential[] {
+    if (!this.securityHandler.authenticate(pw)) {
+      throw new AleSafeError("invalid master password supplied");
+    }
+
+    const aleSafe: AleSafeFull = this.fd.getAleSafeFileContent();
+
+    const allPws: Credential[] = [];
+    for (const cred of aleSafe.credentials) {
+      allPws.push({
+        website: cred.website,
+        username: cred.username,
+        password: this.securityHandler.readCredentialPassword(
+          cred,
+          pw,
+          aleSafe.aleSafeSecurity
+        ),
+      });
+    }
+    return allPws;
+  }
+
   public getPwPlain(pw: string, website: string): string {
+    if (!this.securityHandler.authenticate(pw)) {
+      throw new AleSafeError("invalid master password supplied");
+    }
+
     const aleSafe: AleSafeFull = this.fd.getAleSafeFileContent();
 
     const credential = aleSafe.credentials.find(

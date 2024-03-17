@@ -1,5 +1,5 @@
 import { FileDetector } from "../detector/filedetector";
-import { AleSafeFull, Credential } from "../models/aleSafeTypes";
+import { AleSafeFull, Credential } from "../models/AleSafeTypes";
 import fs from "fs";
 import { AleSafeSecurityService } from "../security/security";
 
