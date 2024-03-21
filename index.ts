@@ -5,7 +5,12 @@ import { AleSafeSecurityService } from "./security/security";
 import { AleSafeManager } from "./manager/alesafemanager";
 import { Credential } from "./models/AleSafeTypes";
 import { Command, Option } from "commander";
-import readline from "readline";
+import prompts from "prompts";
+import chalk from "chalk";
+import { List } from "./commands/list";
+import { AleSafeError } from "./models/AleSafeError";
+import { Get } from "./commands/get";
+
 const fd: FileDetector = new FileDetector();
 const sec: AleSafeSecurityService = new AleSafeSecurityService();
 const aleSafeManager: AleSafeManager = new AleSafeManager(fd, sec);
@@ -54,38 +59,34 @@ program
   .description("CLI tool for managing your passwords.")
   .version("0.0.1");
 
-const r1 = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+const listCmd: List = new List();
+const getCmd: Get = new Get();
 
 program
   .command("list")
   .description("Lists all your saved passwords, given a valid master password")
   .action(async () => {
-    const pw = await askQuestion("Input your master password >");
-    const res = aleSafeLoop.getAllPw(pw);
-
-    console.log(res);
-    r1.close();
+    try {
+      const creds = aleSafeLoop.getAllPw(await listCmd.run());
+      listCmd.render(creds);
+    } catch (error) {
+      if (error instanceof AleSafeError) {
+        console.log(chalk.red("✖ Invalid password supplied"));
+        return;
+      }
+      console.log(chalk.red("✖ Something went wrong: " + error));
+    }
   });
-
-async function askQuestion(q: string): Promise<string> {
-  return new Promise((resolve) => {
-    r1.question(q, (pw: string) => {
-      resolve(pw);
-    });
-  });
-}
 
 program
   .command("get")
   .description("Gets a saved password, given valid master password")
-  .argument("<website>", "the website credentials")
-  .argument("[password]", "your master password")
-  .action((website: string, password: string) => {
-    console.log(website);
-    console.log(password);
+  //.argument("<website>", "the website credentials")
+  //.argument("[password]", "your master password")
+  .action(async () => {
+    const credRes: [string, string] = await getCmd.run();
+    const cred = aleSafeLoop.getPwPlain(credRes[1], credRes[0]);
+    console.log(cred);
   });
 
 program
