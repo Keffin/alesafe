@@ -2,9 +2,9 @@
   "name": "alesafe",
   "version": "0.0.1",
   "description": "Alesafe, a CLI password manager.",
-  "main": "./bin/index.js",
+  "main": "./dist/index.js",
   "bin": {
-    "alesafe": "./bin/index.js"
+    "alesafe": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",
