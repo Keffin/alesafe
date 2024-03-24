@@ -8,6 +8,7 @@ import { AleSafeError } from "../models/AleSafeError";
 import { AleSafeSecurityService } from "../security/security";
 import { AlesafeLoop } from "./alesafeloop";
 import chalk from "chalk";
+import pkg from "../package.json";
 
 const sec: AleSafeSecurityService = new AleSafeSecurityService();
 const aleSafeManager: AleSafeManager = new AleSafeManager(sec);
@@ -20,8 +21,8 @@ const addCmd: Add = new Add();
 
 program
   .name("Alesafe")
-  .description("CLI tool for managing your passwords.")
-  .version("0.0.1");
+  .description("Alesafe is a CLI tool for managing your passwords locally.")
+  .version(pkg.version);
 
 program
   .command("list")

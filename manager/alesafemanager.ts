@@ -37,6 +37,8 @@ export class AleSafeManager {
 
     aleSafeConfig.credentials.push(encryptedCredentials);
 
+    // TODO: Handle `getAleSafeFile()` failure.
+
     fs.writeFileSync(getAlesafeFile(), JSON.stringify(aleSafeConfig, null, 2));
   }
 

@@ -68,7 +68,7 @@ function fetchFile(): [string, boolean] {
     !fs.statSync(hiddenDirPath).isDirectory()
   ) {
     return [
-      `The directory ${ALESAFE_DIR_NAME} does not exist. Create it by running mkdir ~/.alesafe`,
+      `The directory ${ALESAFE_DIR_NAME} does not exist. Create it by running alesafe setup`,
       false,
     ];
   }
@@ -76,7 +76,7 @@ function fetchFile(): [string, boolean] {
   const fp: string = path.join(hiddenDirPath, ALESAFE_FILE_NAME);
   if (!fs.existsSync(fp)) {
     return [
-      `Filename: ${ALESAFE_FILE_NAME} not found at ${ALESAFE_DIR_NAME}. Create it by running touch ~/.alesafe/.test.txt`,
+      `Filename: ${ALESAFE_FILE_NAME} not found at ${ALESAFE_DIR_NAME}. Create it by running alesafe setup`,
       false,
     ];
   }

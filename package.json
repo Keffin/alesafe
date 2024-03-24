@@ -1,6 +1,6 @@
 {
   "name": "alesafe",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Alesafe, a CLI password manager.",
   "main": "./dist/index.js",
   "bin": {
@@ -18,9 +18,15 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "CLI"
+    "CLI",
+    "security-tools",
+    "security",
+    "password-manager"
   ],
-  "author": "Kevin Alemi",
+  "author": {
+    "name": "Kevin Alemi",
+    "email": "kevin.alemi97@gmail.com"
+  },
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.11.27",

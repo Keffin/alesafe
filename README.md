@@ -28,3 +28,35 @@ This JSON file contains the following format:
 Using different Alesafe commands you can add, retrieve and list your credentials. It requires a master password to access, but given a valid master password users will be able to read their saved credentials.
 
 Have a look at the [example file](https://github.com/Keffin/alesafe/blob/main/alexp-example.json)
+
+### How to use
+
+Install it
+
+```sh
+npm install alesafe
+```
+
+Setup your alesafe configuration
+
+```sh
+alesafe setup
+```
+
+For retrieving a specific password
+
+```sh
+alesafe get
+```
+
+For retrieving all passwords
+
+```sh
+alesafe list
+```
+
+For adding a new password
+
+```
+alesafe add
+```
