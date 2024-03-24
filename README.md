@@ -1,6 +1,6 @@
 # alesafe
 
-Alesafe is a CLI password manager tool for setting up and retrieving your passwords.
+Alesafe is a CLI password manager tool for setting up and retrieving your passwords. Basic functionality in place, but still a WIP, among todos are better argument flags and terminal UI.
 
 The general gist of it is that the application creates a file in your home directory:
 
