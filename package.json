@@ -1,6 +1,6 @@
 {
   "name": "alesafe",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Alesafe, a CLI password manager.",
   "main": "./dist/index.js",
   "bin": {
