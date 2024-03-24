@@ -6,7 +6,7 @@ import {
   Cipher,
   Decipher,
 } from "crypto";
-import { FileDetector } from "../detector/filedetector";
+import { getAleSafeFileContent } from "../detector/filedetector";
 import {
   AleSafeFull,
   AleSafeSecurity,
@@ -15,10 +15,9 @@ import {
 
 export class AleSafeSecurityService {
   private readonly iterationCount: number = 1000;
-  private fd: FileDetector = new FileDetector();
 
   public authenticate(userInputPassword: string): boolean {
-    const alesafeConfig: AleSafeFull = this.fd.getAleSafeFileContent();
+    const alesafeConfig: AleSafeFull = getAleSafeFileContent();
     const hashedInput = this.generateHash(
       userInputPassword,
       alesafeConfig.aleSafeSecurity.salt
