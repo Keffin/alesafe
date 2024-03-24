@@ -1,5 +1,4 @@
 import {
-  getAlesafeFile,
   getAleSafeFileContent,
   isFirstRun,
   setupAlesafeConfig,

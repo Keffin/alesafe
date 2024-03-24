@@ -1,24 +1,19 @@
 {
-  "alesafeSecurity": {
-    "masterPasswordHash": "e6271d506c0b2d04c71961a63e2c1515da81fb5b542e4d0dc3b60a0743b1635cb7563c4649a04f69c332b22cfde21f195ee0f6a7605aa94769a88e862c92fc77",
-    "salt": "f2e6ac4c4411b89cbe858897724aaa6f",
+  "aleSafeSecurity": {
+    "masterPasswordHash": "ddc9ef08a60d19cee64f89a1cade502bf2a7477ae0a4752c15bbd82778e5058d",
+    "salt": "5a6a5b584175084e5d72b6fb05086cb2",
     "iterationCount": 1000
   },
   "credentials": [
     {
-      "website": "gitlab",
-      "username": "kevkev",
-      "password": "hunter2"
+      "website": "snapchat",
+      "username": "kevinsnap",
+      "password": "e344cd4ddfa237350f3ad7c1c1333e8f14973103a70b39046395b2b2bd58be3f"
     },
     {
-      "website": "gitlab2",
-      "username": "kevkev2",
-      "password": "hunter22"
-    },
-    {
-      "website": "gitlab3",
-      "username": "kevkev3",
-      "password": "hunter33"
+      "website": "reddit",
+      "username": "kevreddit",
+      "password": "3fbfa4e083e6e4e94906332f72d5974016922ee38482ee607e084b7de51c145c"
     }
   ]
 }

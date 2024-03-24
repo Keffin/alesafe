@@ -1,9 +1,7 @@
 import { AlesafeLoop } from "./alesafeloop";
 import { AleSafeSecurityService } from "./security/security";
 import { AleSafeManager } from "./manager/alesafemanager";
-import { Credential } from "./models/AleSafeTypes";
-import { Command, Option } from "commander";
-import prompts from "prompts";
+import { Command } from "commander";
 import chalk from "chalk";
 import { List } from "./commands/list";
 import { AleSafeError } from "./models/AleSafeError";
@@ -13,21 +11,17 @@ import { Add } from "./commands/add";
 
 const sec: AleSafeSecurityService = new AleSafeSecurityService();
 const aleSafeManager: AleSafeManager = new AleSafeManager(sec);
-
 const aleSafeLoop: AlesafeLoop = new AlesafeLoop(sec, aleSafeManager);
-
-// During first run if missing; User prompts to input master password, and the dir + file is created.
-
 const program: Command = new Command();
-program
-  .name("Alesafe")
-  .description("CLI tool for managing your passwords.")
-  .version("0.0.1");
-
 const listCmd: List = new List();
 const getCmd: Get = new Get();
 const setupCmd: Setup = new Setup();
 const addCmd: Add = new Add();
+
+program
+  .name("Alesafe")
+  .description("CLI tool for managing your passwords.")
+  .version("0.0.1");
 
 program
   .command("list")

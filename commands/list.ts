@@ -1,6 +1,4 @@
 import prompts from "prompts";
-import { Credential } from "../models/AleSafeTypes";
-import chalk from "chalk";
 import { BaseCommand } from "./basecmd";
 
 export class List extends BaseCommand {

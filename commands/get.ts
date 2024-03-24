@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import prompts, { PromptObject } from "prompts";
+import prompts from "prompts";
 import { BaseCommand } from "./basecmd";
 
 export class Get extends BaseCommand {
