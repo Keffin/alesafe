@@ -1,6 +1,8 @@
+import chalk from "chalk";
 import prompts, { PromptObject } from "prompts";
+import { BaseCommand } from "./basecmd";
 
-export class Get {
+export class Get extends BaseCommand {
   public async run(): Promise<[string, string]> {
     const websitePrompt = await prompts({
       type: "text",
