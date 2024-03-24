@@ -1,16 +1,17 @@
+import chalk from "chalk";
 import {
   getAleSafeFileContent,
   isFirstRun,
   setupAlesafeConfig,
-} from "./detector/filedetector";
-import { AleSafeManager } from "./manager/alesafemanager";
-import { AleSafeError } from "./models/AleSafeError";
+} from "../detector/filedetector";
+import { AleSafeManager } from "../manager/alesafemanager";
+import { AleSafeError } from "../models/AleSafeError";
 import {
   AleSafeFull,
   AleSafeSecurity,
   Credential,
-} from "./models/AleSafeTypes";
-import { AleSafeSecurityService } from "./security/security";
+} from "../models/AleSafeTypes";
+import { AleSafeSecurityService } from "../security/security";
 
 export class AlesafeLoop {
   private securityHandler: AleSafeSecurityService;
@@ -79,19 +80,17 @@ export class AlesafeLoop {
     this.aleSafeManager.addPasswordEntry(credential, masterPassword);
   }
 
-  // TODO: Setup main loop
   public setup(masterPassword: string): void {
-    // Handle first time setup
     if (isFirstRun()) {
-      // So second time user auths it will be looking at inputted PW and hashing it with the hash from file and verifying.
-
       const hashedConfig: AleSafeSecurity =
         this.securityHandler.setupMasterPassword(masterPassword);
 
       setupAlesafeConfig(hashedConfig);
       return;
     } else {
-      console.log("AleSafe config already setup...");
+      console.log(
+        chalk.yellow("⚠ your AleSafe config already exists, exiting...")
+      );
     }
   }
 }

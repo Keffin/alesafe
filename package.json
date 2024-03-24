@@ -2,7 +2,10 @@
   "name": "alesafe",
   "version": "0.0.1",
   "description": "Alesafe, a CLI password manager.",
-  "main": "index.ts",
+  "main": "./bin/index.js",
+  "bin": {
+    "alesafe": "./bin/index.js"
+  },
   "scripts": {
     "build": "tsc",
     "start-dev": "ts-node --files index.ts",
