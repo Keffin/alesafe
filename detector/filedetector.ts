@@ -10,7 +10,7 @@ const ALESAFE_FILE_NAME: string = ".alexp.json";
 
 function isFirstRun(): boolean {
   try {
-    const _ = getAlesafeFile();
+    getAlesafeFile();
     return false;
   } catch (error) {
     if (error instanceof AleSafeError) {

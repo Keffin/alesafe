@@ -1,5 +1,5 @@
 import { BaseCommand } from "./basecmd";
-import prompts, { PromptObject } from "prompts";
+import prompts from "prompts";
 export class Setup extends BaseCommand {
   public async run(): Promise<[string]> {
     const passwordPrompt = await prompts({

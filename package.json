@@ -9,6 +9,7 @@
   "scripts": {
     "build": "tsc",
     "start-dev": "ts-node --files index.ts",
+    "lint": "eslint '**/*.{js,ts}' --fix",
     "dev": "node -r ts-node/register index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,6 +20,9 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^20.11.27",
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
+    "@typescript-eslint/parser": "^7.3.1",
+    "eslint": "^8.57.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2"
   },
