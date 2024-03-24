@@ -1,14 +1,15 @@
-import { FileDetector } from "../detector/filedetector";
 import { AleSafeFull, Credential } from "../models/AleSafeTypes";
 import fs from "fs";
 import { AleSafeSecurityService } from "../security/security";
+import {
+  getAlesafeFile,
+  getAleSafeFileContent,
+} from "../detector/filedetector";
 
 export class AleSafeManager {
-  private fd: FileDetector;
   private securityService: AleSafeSecurityService;
 
-  constructor(fd: FileDetector, securityService: AleSafeSecurityService) {
-    this.fd = fd;
+  constructor(securityService: AleSafeSecurityService) {
     this.securityService = securityService;
   }
 
@@ -17,7 +18,7 @@ export class AleSafeManager {
   }
 
   private writeEntry(credentialToAdd: Credential, mPw: string): void {
-    const aleSafeConfig: AleSafeFull = this.fd.getAleSafeFileContent();
+    const aleSafeConfig: AleSafeFull = getAleSafeFileContent();
 
     if (this.isDupelicate(credentialToAdd, aleSafeConfig)) {
       return;
@@ -36,10 +37,7 @@ export class AleSafeManager {
 
     aleSafeConfig.credentials.push(encryptedCredentials);
 
-    fs.writeFileSync(
-      this.fd.getAlesafeFile(),
-      JSON.stringify(aleSafeConfig, null, 2)
-    );
+    fs.writeFileSync(getAlesafeFile(), JSON.stringify(aleSafeConfig, null, 2));
   }
 
   private isDupelicate(
