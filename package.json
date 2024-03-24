@@ -1,10 +1,14 @@
 {
   "name": "alesafe",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Alesafe, a CLI password manager.",
   "main": "./dist/index.js",
   "bin": {
     "alesafe": "./dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Keffin/alesafe"
   },
   "scripts": {
     "build": "tsc",
