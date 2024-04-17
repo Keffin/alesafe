@@ -1,10 +1,8 @@
 import prompts from "prompts";
 import { BaseCommand } from "./basecmd";
+import { Credential } from "../models/AleSafeTypes";
 
 export class List extends BaseCommand {
-  // TODO: Add --all flag for getting all
-  // TODO: Otherwise if list command get list of websites and allow user to choose which one
-  // TODO: Use interactive prompt list
   public async run(): Promise<[string]> {
     const passwordPrompt = await prompts({
       type: "password",
@@ -13,5 +11,22 @@ export class List extends BaseCommand {
     });
 
     return new Promise((resolve) => resolve([passwordPrompt.value]));
+  }
+
+  public async selectPw(credentials: Credential[]) {
+    const choices = credentials.map((cred) => ({
+      title: cred.website,
+      value: [cred.website, cred.username, cred.password],
+    }));
+
+    const listPrompt = await prompts({
+      type: "select",
+      name: "website",
+      message: "Pick a website",
+      choices: choices,
+      initial: 0,
+    });
+
+    return listPrompt.website;
   }
 }

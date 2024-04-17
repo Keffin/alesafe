@@ -27,11 +27,31 @@ program
 program
   .command("list")
   .description("Lists all your saved passwords, given a valid master password")
-  .action(async () => {
+  .option("-a, --all", "log all passwords")
+  .action(async (options) => {
     try {
+      const { all } = options;
       const pw = await listCmd.run();
       const creds = aleSafeLoop.getAllCredentials(pw[0]);
-      creds.map((cred) => listCmd.render(cred));
+
+      if (creds.length === 0) {
+        console.log(
+          chalk.yellow(
+            "You have no saved passwords yet. Run add command to setup."
+          )
+        );
+        return;
+      }
+
+      if (all) {
+        console.log("all activated");
+        creds.map((cred) => listCmd.render(cred));
+        return;
+      }
+
+      // Handle is length is 1, since choices prompts will fail.
+      const [website, username, pass] = await listCmd.selectPw(creds);
+      listCmd.render({ website, username, password: pass });
     } catch (error) {
       if (error instanceof AleSafeError) {
         console.log(chalk.red(`✖ ${error.message}`));
