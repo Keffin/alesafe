@@ -16,7 +16,7 @@ export class Get extends BaseCommand {
     });
 
     return new Promise((resolve) =>
-      resolve([websitePrompt.website, passwordPrompt.value])
+      resolve([websitePrompt.website, passwordPrompt.value]),
     );
   }
 }

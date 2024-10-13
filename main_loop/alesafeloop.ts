@@ -3,6 +3,7 @@ import {
   getAleSafeFileContent,
   isFirstRun,
   setupAlesafeConfig,
+  setupMuxAlesafeConfig,
 } from "../detector/filedetector";
 import { AleSafeManager } from "../manager/alesafemanager";
 import { AleSafeError } from "../models/AleSafeError";
@@ -19,7 +20,7 @@ export class AlesafeLoop {
 
   constructor(
     securityHandler: AleSafeSecurityService,
-    aleSafeManager: AleSafeManager
+    aleSafeManager: AleSafeManager,
   ) {
     this.securityHandler = securityHandler;
     this.aleSafeManager = aleSafeManager;
@@ -40,7 +41,7 @@ export class AlesafeLoop {
         password: this.securityHandler.readCredentialPassword(
           cred,
           pw,
-          aleSafe.aleSafeSecurity
+          aleSafe.aleSafeSecurity,
         ),
       });
     }
@@ -55,7 +56,7 @@ export class AlesafeLoop {
     const aleSafe: AleSafeFull = getAleSafeFileContent();
 
     const credential = aleSafe.credentials.find(
-      (cred) => cred.website === website
+      (cred) => cred.website === website,
     );
 
     if (credential) {
@@ -65,7 +66,7 @@ export class AlesafeLoop {
         password: this.securityHandler.readCredentialPassword(
           credential,
           masterPassword,
-          aleSafe.aleSafeSecurity
+          aleSafe.aleSafeSecurity,
         ),
       };
     }
@@ -89,8 +90,12 @@ export class AlesafeLoop {
       return;
     } else {
       console.log(
-        chalk.yellow("⚠ your AleSafe config already exists, exiting...")
+        chalk.yellow("⚠ your AleSafe config already exists, exiting..."),
       );
     }
+  }
+
+  public setupMux() {
+    return setupMuxAlesafeConfig();
   }
 }

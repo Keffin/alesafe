@@ -31,7 +31,7 @@ export class Add extends BaseCommand {
         userNamePrompt.username,
         webPw.pw,
         passwordPrompt.value,
-      ])
+      ]),
     );
   }
 }

@@ -20,14 +20,14 @@ export class AleSafeManager {
   private writeEntry(credentialToAdd: Credential, mPw: string): void {
     const aleSafeConfig: AleSafeFull = getAleSafeFileContent();
 
-    if (this.isDupelicate(credentialToAdd, aleSafeConfig)) {
+    if (this.isDuplicate(credentialToAdd, aleSafeConfig)) {
       return;
     }
 
     const encryptPw = this.securityService.setupCredentialPassword(
       credentialToAdd.password,
       mPw,
-      aleSafeConfig.aleSafeSecurity
+      aleSafeConfig.aleSafeSecurity,
     );
 
     const encryptedCredentials: Credential = {
@@ -42,9 +42,9 @@ export class AleSafeManager {
     fs.writeFileSync(getAlesafeFile(), JSON.stringify(aleSafeConfig, null, 2));
   }
 
-  private isDupelicate(
+  private isDuplicate(
     credentialsToAdd: Credential,
-    aleSafeConfig: AleSafeFull
+    aleSafeConfig: AleSafeFull,
   ): boolean {
     for (const cred of aleSafeConfig.credentials) {
       if (cred.website === credentialsToAdd.website) {

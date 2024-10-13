@@ -32,16 +32,28 @@ function getAleSafeFileContent(): AleSafeFull {
 function getAlesafeFile(): string {
   const fetchedFiled: [string, boolean] = fetchFile();
 
-  if (fetchedFiled[1] === false) {
+  if (!fetchedFiled[1]) {
     throw new AleSafeError(fetchedFiled[0]);
   }
 
   return fetchedFiled[0];
 }
 
+function setupMuxAlesafeConfig() {
+  console.log("Setting up multiple configs...");
+  return getFiles();
+}
+
+function getFiles(): string[] {
+  const alesafeDir: string = path.join(HOME_DIR, ALESAFE_DIR_NAME);
+  return fs
+    .readdirSync(alesafeDir)
+    .filter((fileName) => fileName !== ALESAFE_FILE_NAME);
+}
+
 function setupAlesafeConfig(aleSafeSecurityConfig: AleSafeSecurity): void {
   console.log(
-    "Seems like you are missing the config needed...setting it up..."
+    "Seems like you are missing the config needed...setting it up...",
   );
 
   // Create alesafe DIR
@@ -88,5 +100,6 @@ export {
   getAleSafeFileContent,
   getAlesafeFile,
   setupAlesafeConfig,
+  setupMuxAlesafeConfig,
   isFirstRun,
 };

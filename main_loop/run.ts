@@ -9,6 +9,7 @@ import { AleSafeSecurityService } from "../security/security";
 import { AlesafeLoop } from "./alesafeloop";
 import chalk from "chalk";
 import pkg from "../package.json";
+import { Mux } from "../commands/mux";
 
 const sec: AleSafeSecurityService = new AleSafeSecurityService();
 const aleSafeManager: AleSafeManager = new AleSafeManager(sec);
@@ -18,6 +19,7 @@ const listCmd: List = new List();
 const getCmd: Get = new Get();
 const setupCmd: Setup = new Setup();
 const addCmd: Add = new Add();
+const muxCmd: Mux = new Mux();
 
 program
   .name("Alesafe")
@@ -37,8 +39,8 @@ program
       if (creds.length === 0) {
         console.log(
           chalk.yellow(
-            "You have no saved passwords yet. Run add command to setup."
-          )
+            "You have no saved passwords yet. Run add command to setup.",
+          ),
         );
         return;
       }
@@ -87,9 +89,21 @@ program
   });
 
 program
+  .command("mux")
+  .description("Allows you to setup multiple AleSafe configuration files.")
+    .option("-c, --create", "creates a new alesafe json file")
+    .option("-a, --all", "logs all passwords")
+    .option("-s, --single", "logs a selected password")
+  .action(async () => {
+    const files = aleSafeLoop.setupMux();
+    const fileName = await muxCmd.selectFile(files);
+    console.log(fileName);
+  });
+
+program
   .command("add")
   .description(
-    "Encrypts and saves a new password, given a valid master password"
+    "Encrypts and saves a new password, given a valid master password",
   )
   .action(async () => {
     const cred = await addCmd.run();
@@ -100,7 +114,7 @@ program
         username: cred[1],
         password: cred[2],
       },
-      cred[3]
+      cred[3],
     );
   });
 // TODO: Also add some update command.
