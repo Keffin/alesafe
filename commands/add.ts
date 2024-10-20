@@ -1,4 +1,4 @@
-import { BaseCommand } from "./basecmd";
+import { BaseCommand } from "./basecmd.js";
 import prompts from "prompts";
 export class Add extends BaseCommand {
   public async run(): Promise<[string, string, string, string]> {
@@ -31,7 +31,7 @@ export class Add extends BaseCommand {
         userNamePrompt.username,
         webPw.pw,
         passwordPrompt.value,
-      ]),
+      ])
     );
   }
 }

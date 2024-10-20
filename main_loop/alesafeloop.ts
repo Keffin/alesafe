@@ -4,15 +4,15 @@ import {
   isFirstRun,
   setupAlesafeConfig,
   setupMuxAlesafeConfig,
-} from "../detector/filedetector";
-import { AleSafeManager } from "../manager/alesafemanager";
-import { AleSafeError } from "../models/AleSafeError";
-import {
+} from "../detector/filedetector.js";
+import { AleSafeManager } from "../manager/alesafemanager.js";
+import { AleSafeError } from "../models/AleSafeError.js";
+import type {
   AleSafeFull,
   AleSafeSecurity,
   Credential,
-} from "../models/AleSafeTypes";
-import { AleSafeSecurityService } from "../security/security";
+} from "../models/AleSafeTypes.js";
+import { AleSafeSecurityService } from "../security/security.js";
 
 export class AlesafeLoop {
   private securityHandler: AleSafeSecurityService;
@@ -20,7 +20,7 @@ export class AlesafeLoop {
 
   constructor(
     securityHandler: AleSafeSecurityService,
-    aleSafeManager: AleSafeManager,
+    aleSafeManager: AleSafeManager
   ) {
     this.securityHandler = securityHandler;
     this.aleSafeManager = aleSafeManager;
@@ -41,7 +41,7 @@ export class AlesafeLoop {
         password: this.securityHandler.readCredentialPassword(
           cred,
           pw,
-          aleSafe.aleSafeSecurity,
+          aleSafe.aleSafeSecurity
         ),
       });
     }
@@ -56,7 +56,7 @@ export class AlesafeLoop {
     const aleSafe: AleSafeFull = getAleSafeFileContent();
 
     const credential = aleSafe.credentials.find(
-      (cred) => cred.website === website,
+      (cred) => cred.website === website
     );
 
     if (credential) {
@@ -66,7 +66,7 @@ export class AlesafeLoop {
         password: this.securityHandler.readCredentialPassword(
           credential,
           masterPassword,
-          aleSafe.aleSafeSecurity,
+          aleSafe.aleSafeSecurity
         ),
       };
     }
@@ -88,11 +88,10 @@ export class AlesafeLoop {
 
       setupAlesafeConfig(hashedConfig);
       return;
-    } else {
-      console.log(
-        chalk.yellow("⚠ your AleSafe config already exists, exiting..."),
-      );
     }
+    console.log(
+        chalk.yellow("⚠ your AleSafe config already exists, exiting...")
+      );
   }
 
   public setupMux() {

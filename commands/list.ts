@@ -1,6 +1,6 @@
 import prompts from "prompts";
-import { BaseCommand } from "./basecmd";
-import { Credential } from "../models/AleSafeTypes";
+import { BaseCommand } from "./basecmd.js";
+import type { Credential } from "../models/AleSafeTypes.js";
 
 export class List extends BaseCommand {
   public async run(): Promise<[string]> {

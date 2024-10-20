@@ -1,4 +1,4 @@
-import { BaseCommand } from "./basecmd";
+import { BaseCommand } from "./basecmd.js";
 import prompts from "prompts";
 
 export class Mux extends BaseCommand {
@@ -11,7 +11,7 @@ export class Mux extends BaseCommand {
       (fileName: string) => ({
         title: fileName,
         value: fileName,
-      }),
+      })
     );
 
     const listPrompt: prompts.Answers<string> = await prompts({

@@ -1,5 +1,5 @@
 import prompts from "prompts";
-import { BaseCommand } from "./basecmd";
+import { BaseCommand } from "./basecmd.js";
 
 export class Get extends BaseCommand {
   public async run(): Promise<[string, string]> {
@@ -16,7 +16,7 @@ export class Get extends BaseCommand {
     });
 
     return new Promise((resolve) =>
-      resolve([websitePrompt.website, passwordPrompt.value]),
+      resolve([websitePrompt.website, passwordPrompt.value])
     );
   }
 }

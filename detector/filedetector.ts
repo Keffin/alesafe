@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
 import os from "os";
-import { AleSafeFull, AleSafeSecurity } from "../models/AleSafeTypes";
-import { AleSafeError } from "../models/AleSafeError";
+import type { AleSafeFull, AleSafeSecurity } from "../models/AleSafeTypes.js";
+import { AleSafeError } from "../models/AleSafeError.js";
 
 const HOME_DIR: string = os.homedir();
 const ALESAFE_DIR_NAME: string = ".alesafe";
@@ -53,12 +53,21 @@ function getFiles(): string[] {
 
 function setupAlesafeConfig(aleSafeSecurityConfig: AleSafeSecurity): void {
   console.log(
-    "Seems like you are missing the config needed...setting it up...",
+    "Seems like you are missing the config needed...setting it up..."
   );
 
+  const alesafeDir = path.join(HOME_DIR, ALESAFE_DIR_NAME);
   // Create alesafe DIR
-  const alesafeDir: string = path.join(HOME_DIR, ALESAFE_DIR_NAME);
-  fs.mkdirSync(alesafeDir);
+  try {
+    fs.mkdirSync(alesafeDir);
+  } catch (err) {
+    if (err instanceof Error) {
+      if (err.message.includes("file already exists")) {
+        console.log("Directory already exists...skipping mkdir")
+      }
+    }
+  }
+
   // Create alesafe JSON file
   const alesafeJson: string = path.join(alesafeDir, ALESAFE_FILE_NAME);
 

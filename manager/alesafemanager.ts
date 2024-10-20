@@ -1,10 +1,10 @@
-import { AleSafeFull, Credential } from "../models/AleSafeTypes";
+import type { AleSafeFull, Credential } from "../models/AleSafeTypes.js";
 import fs from "fs";
-import { AleSafeSecurityService } from "../security/security";
+import { AleSafeSecurityService } from "../security/security.js";
 import {
   getAlesafeFile,
   getAleSafeFileContent,
-} from "../detector/filedetector";
+} from "../detector/filedetector.js";
 
 export class AleSafeManager {
   private securityService: AleSafeSecurityService;
@@ -27,7 +27,7 @@ export class AleSafeManager {
     const encryptPw = this.securityService.setupCredentialPassword(
       credentialToAdd.password,
       mPw,
-      aleSafeConfig.aleSafeSecurity,
+      aleSafeConfig.aleSafeSecurity
     );
 
     const encryptedCredentials: Credential = {
@@ -44,7 +44,7 @@ export class AleSafeManager {
 
   private isDuplicate(
     credentialsToAdd: Credential,
-    aleSafeConfig: AleSafeFull,
+    aleSafeConfig: AleSafeFull
   ): boolean {
     for (const cred of aleSafeConfig.credentials) {
       if (cred.website === credentialsToAdd.website) {

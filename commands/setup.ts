@@ -1,4 +1,4 @@
-import { BaseCommand } from "./basecmd";
+import { BaseCommand } from "./basecmd.js";
 import prompts from "prompts";
 export class Setup extends BaseCommand {
   public async run(): Promise<[string]> {

@@ -6,12 +6,12 @@ import {
   Cipher,
   Decipher,
 } from "crypto";
-import { getAleSafeFileContent } from "../detector/filedetector";
-import {
+import { getAleSafeFileContent } from "../detector/filedetector.js";
+import type {
   AleSafeFull,
   AleSafeSecurity,
   Credential,
-} from "../models/AleSafeTypes";
+} from "../models/AleSafeTypes.js";
 
 export class AleSafeSecurityService {
   private readonly iterationCount: number = 1000;
@@ -20,7 +20,7 @@ export class AleSafeSecurityService {
     const alesafeConfig: AleSafeFull = getAleSafeFileContent();
     const hashedInput = this.generateHash(
       userInputPassword,
-      alesafeConfig.aleSafeSecurity.salt,
+      alesafeConfig.aleSafeSecurity.salt
     );
 
     return alesafeConfig.aleSafeSecurity.masterPasswordHash === hashedInput;
@@ -30,7 +30,7 @@ export class AleSafeSecurityService {
   public readCredentialPassword(
     cred: Credential,
     mPw: string,
-    secConf: AleSafeSecurity,
+    secConf: AleSafeSecurity
   ): string {
     const key: Buffer = this.getEncryptionKey(mPw, secConf);
     return this.decryptPassword(cred.password, key);
@@ -40,7 +40,7 @@ export class AleSafeSecurityService {
   public setupCredentialPassword(
     credentialPassword: string,
     mPw: string,
-    secConf: AleSafeSecurity,
+    secConf: AleSafeSecurity
   ): string {
     const key: Buffer = this.getEncryptionKey(mPw, secConf);
     return this.encryptPassword(credentialPassword, key);
@@ -51,7 +51,7 @@ export class AleSafeSecurityService {
     const salt: string = this.generateSalt();
     const masterPasswordHash: string = this.generateHash(
       userInputPassword,
-      salt,
+      salt
     );
 
     return {
@@ -64,27 +64,27 @@ export class AleSafeSecurityService {
   // Purpose: Uses the master password to derive an encryption key
   private getEncryptionKey(
     masterPasswordInput: string,
-    secConf: AleSafeSecurity,
+    secConf: AleSafeSecurity
   ): Buffer {
     return pbkdf2Sync(
       masterPasswordInput,
       secConf.salt,
       secConf.iterationCount,
       32,
-      "sha512",
+      "sha512"
     );
   }
 
   // Purpose: Symmetric encryption of the `Credential` password, with key derived from master password.
   private encryptPassword(
     credentialPassword: string,
-    derivedKey: Buffer,
+    derivedKey: Buffer
   ): string {
     const initializationVector: Buffer = randomBytes(16);
     const cipher: Cipher = createCipheriv(
       "aes-256-cbc",
       derivedKey,
-      initializationVector,
+      initializationVector
     );
 
     let encryptedPw: string = cipher.update(credentialPassword, "utf8", "hex");
@@ -96,25 +96,25 @@ export class AleSafeSecurityService {
   // Purpose: Symmetric decryption of the encrypted `Credential` password, with key derived from master password.
   private decryptPassword(
     encryptedPassword: string,
-    derivedKey: Buffer,
+    derivedKey: Buffer
   ): string {
     // extract IV from encrypted password.
     const initializationVector: Buffer = Buffer.from(
       encryptedPassword.slice(0, 32),
-      "hex",
+      "hex"
     );
 
     const encryptedData: string = encryptedPassword.slice(32);
     const decipher: Decipher = createDecipheriv(
       "aes-256-cbc",
       derivedKey,
-      initializationVector,
+      initializationVector
     );
 
     let decryptedPassword: string = decipher.update(
       encryptedData,
       "hex",
-      "utf8",
+      "utf8"
     );
     decryptedPassword += decipher.final("utf8");
     return decryptedPassword;
@@ -131,7 +131,7 @@ export class AleSafeSecurityService {
       salt,
       this.iterationCount,
       keyLen,
-      digest,
+      digest
     );
 
     return derivedKey.toString("hex");

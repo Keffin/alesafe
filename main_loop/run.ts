@@ -1,15 +1,15 @@
 import { Command } from "commander";
-import { Add } from "../commands/add";
-import { Get } from "../commands/get";
-import { List } from "../commands/list";
-import { Setup } from "../commands/setup";
-import { AleSafeManager } from "../manager/alesafemanager";
-import { AleSafeError } from "../models/AleSafeError";
-import { AleSafeSecurityService } from "../security/security";
-import { AlesafeLoop } from "./alesafeloop";
+import { Add } from "../commands/add.js";
+import { Get } from "../commands/get.js";
+import { List } from "../commands/list.js";
+import { Setup } from "../commands/setup.js";
+import { AleSafeManager } from "../manager/alesafemanager.js";
+import { AleSafeError } from "../models/AleSafeError.js";
+import { AleSafeSecurityService } from "../security/security.js";
+import { AlesafeLoop } from "./alesafeloop.js";
 import chalk from "chalk";
-import pkg from "../package.json";
-import { Mux } from "../commands/mux";
+import pkg from "../package.json" with { type: "json" };
+import { Mux } from "../commands/mux.js";
 
 const sec: AleSafeSecurityService = new AleSafeSecurityService();
 const aleSafeManager: AleSafeManager = new AleSafeManager(sec);
@@ -39,8 +39,8 @@ program
       if (creds.length === 0) {
         console.log(
           chalk.yellow(
-            "You have no saved passwords yet. Run add command to setup.",
-          ),
+            "You have no saved passwords yet. Run add command to setup."
+          )
         );
         return;
       }
@@ -91,9 +91,9 @@ program
 program
   .command("mux")
   .description("Allows you to setup multiple AleSafe configuration files.")
-    .option("-c, --create", "creates a new alesafe json file")
-    .option("-a, --all", "logs all passwords")
-    .option("-s, --single", "logs a selected password")
+  .option("-c, --create", "creates a new alesafe json file")
+  .option("-a, --all", "logs all passwords")
+  .option("-s, --single", "logs a selected password")
   .action(async () => {
     const files = aleSafeLoop.setupMux();
     const fileName = await muxCmd.selectFile(files);
@@ -103,7 +103,7 @@ program
 program
   .command("add")
   .description(
-    "Encrypts and saves a new password, given a valid master password",
+    "Encrypts and saves a new password, given a valid master password"
   )
   .action(async () => {
     const cred = await addCmd.run();
@@ -114,7 +114,7 @@ program
         username: cred[1],
         password: cred[2],
       },
-      cred[3],
+      cred[3]
     );
   });
 // TODO: Also add some update command.

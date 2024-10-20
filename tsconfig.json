@@ -1,12 +1,22 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true, // Helps with CJS and ESM
+    "skipLibCheck": true, // Skips type checking .d.ts
+    "target": "es2022", // JS version
+    "allowJs": true, // Allows for JS imports
+    "resolveJsonModule": true, // Allows for JSON imports
+    "moduleDetection": "force", // Force TS to consider all files as modules
+    "isolatedModules": true, // Prevent unsafe ts features
+    "verbatimModuleSyntax": true, // Force import and export syntax
+    /* Transpiling config */
+    "module": "NodeNext", // Module syntax.
     "outDir": "./dist",
-    "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
-    "module": "commonjs" /* Specify what module code is generated. */,
-    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
-    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
-    "strict": true /* Enable all strict type-checking options. */,
-    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
-    "resolveJsonModule": true
+    /* Strictness */
+    "strict": true, // Enable strict type checking
+    "noImplicitAny": true, // No anys
+    "strictFunctionTypes": true, // Strict params types in funcs
+    "noImplicitReturns": true, // Strict return types for funcs
+    "noUncheckedIndexedAccess": true, // Prevent access of arr or obj before defined check
+    "noImplicitOverride": true // Enforces class overriding
   }
 }

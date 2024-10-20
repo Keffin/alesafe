@@ -3,6 +3,7 @@
   "version": "0.0.5",
   "description": "Alesafe, a CLI password manager.",
   "main": "./dist/index.js",
+  "type": "module",
   "bin": {
     "alesafe": "./dist/index.js"
   },
@@ -15,6 +16,7 @@
     "start-dev": "ts-node --files index.ts",
     "lint": "eslint '**/*.{js,ts}' --fix",
     "dev": "node -r ts-node/register index.ts",
+    "dev-new": "npx tsc && node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
