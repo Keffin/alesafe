@@ -54,7 +54,7 @@ export const setupMasterPassword = (userInputPassword: string): AlesafeSecurity 
     masterPasswordHash,
     salt,
     iterationCount: ITERATION_COUNT
-  } as AlesafeSecurity;
+  };
 }
 
 // Purpose: Symmetric decryption of the encrypted `Credential` password, with key derived from master password.

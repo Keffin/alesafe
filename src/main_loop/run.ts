@@ -34,7 +34,7 @@ program
     try {
       const { all } = options;
       const pw = await listCmd.run();
-      const creds = aleSafeLoop.getAllCredentials(pw[0]);
+      const creds = aleSafeLoop.getAllCredentials(pw.masterPw);
 
       if (creds.length === 0) {
         console.log(
@@ -68,8 +68,8 @@ program
   .description("Gets a saved password, given valid master password")
   .action(async () => {
     try {
-      const credRes: [string, string] = await getCmd.run();
-      const cred = aleSafeLoop.getCredential(credRes[1], credRes[0]);
+      const credRes = await getCmd.run();
+      const cred = aleSafeLoop.getCredential(credRes.password, credRes.website);
       getCmd.render(cred);
     } catch (error) {
       if (error instanceof AlesafeError) {
@@ -85,7 +85,7 @@ program
   .description("Sets up your AleSafe config.")
   .action(async () => {
     const pw = await setupCmd.run();
-    aleSafeLoop.setup(pw[0]);
+    aleSafeLoop.setup(pw.masterPw);
   });
 
 program
@@ -110,11 +110,11 @@ program
 
     aleSafeLoop.add(
       {
-        website: cred[0],
-        username: cred[1],
-        password: cred[2],
+        website: cred.website,
+        username: cred.username,
+        password: cred.password,
       },
-      cred[3]
+      cred.masterPw
     );
   });
 // TODO: Also add some update command.

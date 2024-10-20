@@ -1,7 +1,15 @@
-import { BaseCommand } from "./basecmd.js";
+import {BaseCommand, type BaseResult} from "./basecmd.js";
 import prompts from "prompts";
+
+export interface AddResult extends BaseResult {
+  website: string,
+  username: string,
+  password: string,
+  masterPw: string
+}
+
 export class Add extends BaseCommand {
-  public async run(): Promise<[string, string, string, string]> {
+  public async run(): Promise<AddResult> {
     const websitePrompt = await prompts({
       type: "text",
       name: "website",
@@ -26,12 +34,12 @@ export class Add extends BaseCommand {
       message: "Enter your master password: ",
     });
     return new Promise((resolve) =>
-      resolve([
-        websitePrompt.website,
-        userNamePrompt.username,
-        webPw.pw,
-        passwordPrompt.value,
-      ])
+      resolve({
+        website: websitePrompt.website,
+        username: userNamePrompt.username,
+        password: webPw.pw,
+        masterPw: passwordPrompt.value
+      })
     );
   }
 }

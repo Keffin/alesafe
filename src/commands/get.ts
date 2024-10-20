@@ -1,8 +1,13 @@
 import prompts from "prompts";
-import { BaseCommand } from "./basecmd.js";
+import {BaseCommand, type BaseResult} from "./basecmd.js";
+
+export interface GetResult extends BaseResult{
+  website: string,
+  password: string,
+};
 
 export class Get extends BaseCommand {
-  public async run(): Promise<[string, string]> {
+  public async run(): Promise<GetResult> {
     const websitePrompt = await prompts({
       type: "text",
       name: "website",
@@ -16,7 +21,7 @@ export class Get extends BaseCommand {
     });
 
     return new Promise((resolve) =>
-      resolve([websitePrompt.website, passwordPrompt.value])
+      resolve({website: websitePrompt.website, password: passwordPrompt.value})
     );
   }
 }
