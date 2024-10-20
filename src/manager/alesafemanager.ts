@@ -1,17 +1,12 @@
 import type { AlesafeFull, Credential } from "../models/alesafeTypes.js";
 import fs from "fs";
-import { AleSafeSecurityService } from "../security/security.js";
 import {
   getAlesafeFile,
   getAleSafeFileContent,
 } from "../detector/filedetector.js";
+import {setupCredentialPassword} from "../security/security.js";
 
 export class AleSafeManager {
-  private securityService: AleSafeSecurityService;
-
-  constructor(securityService: AleSafeSecurityService) {
-    this.securityService = securityService;
-  }
 
   public addPasswordEntry(credentialToAdd: Credential, mPw: string) {
     this.writeEntry(credentialToAdd, mPw);
@@ -24,7 +19,7 @@ export class AleSafeManager {
       return;
     }
 
-    const encryptPw = this.securityService.setupCredentialPassword(
+    const encryptPw = setupCredentialPassword(
       credentialToAdd.password,
       mPw,
       aleSafeConfig.aleSafeSecurity

@@ -1,4 +1,4 @@
 #!/usr/bin/env node
-import { main } from "./main_loop/run.js";
+import { main } from "./src/main_loop/run.js";
 
 main();

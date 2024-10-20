@@ -12,22 +12,19 @@ import type {
   AlesafeSecurity,
   Credential,
 } from "../models/alesafeTypes.js";
-import { AleSafeSecurityService } from "../security/security.js";
+import {authenticate, readCredentialPassword, setupMasterPassword} from "../security/security.js";
 
 export class AlesafeLoop {
-  private securityHandler: AleSafeSecurityService;
   private aleSafeManager: AleSafeManager;
 
   constructor(
-    securityHandler: AleSafeSecurityService,
     aleSafeManager: AleSafeManager
   ) {
-    this.securityHandler = securityHandler;
     this.aleSafeManager = aleSafeManager;
   }
 
   public getAllCredentials(pw: string): Credential[] {
-    if (!this.securityHandler.authenticate(pw)) {
+    if (!authenticate(pw)) {
       throw new AlesafeError("invalid master password supplied");
     }
 
@@ -38,7 +35,7 @@ export class AlesafeLoop {
       allPws.push({
         website: cred.website,
         username: cred.username,
-        password: this.securityHandler.readCredentialPassword(
+        password: readCredentialPassword(
           cred,
           pw,
           aleSafe.aleSafeSecurity
@@ -49,7 +46,7 @@ export class AlesafeLoop {
   }
 
   public getCredential(masterPassword: string, website: string): Credential {
-    if (!this.securityHandler.authenticate(masterPassword)) {
+    if (!authenticate(masterPassword)) {
       throw new AlesafeError("invalid master password supplied");
     }
 
@@ -63,7 +60,7 @@ export class AlesafeLoop {
       return {
         website: website,
         username: credential.username,
-        password: this.securityHandler.readCredentialPassword(
+        password: readCredentialPassword(
           credential,
           masterPassword,
           aleSafe.aleSafeSecurity
@@ -75,7 +72,7 @@ export class AlesafeLoop {
   }
 
   public add(credential: Credential, masterPassword: string): void {
-    if (!this.securityHandler.authenticate(masterPassword)) {
+    if (!authenticate(masterPassword)) {
       throw new AlesafeError("invalid master password supplied");
     }
     this.aleSafeManager.addPasswordEntry(credential, masterPassword);
@@ -84,7 +81,7 @@ export class AlesafeLoop {
   public setup(masterPassword: string): void {
     if (isFirstRun()) {
       const hashedConfig: AlesafeSecurity =
-        this.securityHandler.setupMasterPassword(masterPassword);
+        setupMasterPassword(masterPassword);
 
       setupAlesafeConfig(hashedConfig);
       return;
