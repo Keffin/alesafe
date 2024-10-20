@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
 import os from "os";
-import type { AleSafeFull, AleSafeSecurity } from "../models/AleSafeTypes.js";
-import { AleSafeError } from "../models/AleSafeError.js";
+import type { AlesafeFull, AlesafeSecurity } from "../models/alesafeTypes.js";
+import { AlesafeError } from "../models/alesafeError.js";
 
 const HOME_DIR: string = os.homedir();
 const ALESAFE_DIR_NAME: string = ".alesafe";
@@ -13,7 +13,7 @@ function isFirstRun(): boolean {
     getAlesafeFile();
     return false;
   } catch (error) {
-    if (error instanceof AleSafeError) {
+    if (error instanceof AlesafeError) {
       return true;
     }
     throw error;
@@ -21,11 +21,11 @@ function isFirstRun(): boolean {
 }
 
 // Purpose: Fetches the file and reads it into our type.
-function getAleSafeFileContent(): AleSafeFull {
+function getAleSafeFileContent(): AlesafeFull {
   const file: string = getAlesafeFile();
   const content: string = fs.readFileSync(file).toString();
 
-  return JSON.parse(content) as AleSafeFull;
+  return JSON.parse(content) as AlesafeFull;
 }
 
 // Public method for fetching the alesafe file path.
@@ -33,7 +33,7 @@ function getAlesafeFile(): string {
   const fetchedFiled: [string, boolean] = fetchFile();
 
   if (!fetchedFiled[1]) {
-    throw new AleSafeError(fetchedFiled[0]);
+    throw new AlesafeError(fetchedFiled[0]);
   }
 
   return fetchedFiled[0];
@@ -51,7 +51,7 @@ function getFiles(): string[] {
     .filter((fileName) => fileName !== ALESAFE_FILE_NAME);
 }
 
-function setupAlesafeConfig(aleSafeSecurityConfig: AleSafeSecurity): void {
+function setupAlesafeConfig(aleSafeSecurityConfig: AlesafeSecurity): void {
   console.log(
     "Seems like you are missing the config needed...setting it up..."
   );

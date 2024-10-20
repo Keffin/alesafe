@@ -6,12 +6,12 @@ import {
   setupMuxAlesafeConfig,
 } from "../detector/filedetector.js";
 import { AleSafeManager } from "../manager/alesafemanager.js";
-import { AleSafeError } from "../models/AleSafeError.js";
+import { AlesafeError } from "../models/alesafeError.js";
 import type {
-  AleSafeFull,
-  AleSafeSecurity,
+  AlesafeFull,
+  AlesafeSecurity,
   Credential,
-} from "../models/AleSafeTypes.js";
+} from "../models/alesafeTypes.js";
 import { AleSafeSecurityService } from "../security/security.js";
 
 export class AlesafeLoop {
@@ -28,10 +28,10 @@ export class AlesafeLoop {
 
   public getAllCredentials(pw: string): Credential[] {
     if (!this.securityHandler.authenticate(pw)) {
-      throw new AleSafeError("invalid master password supplied");
+      throw new AlesafeError("invalid master password supplied");
     }
 
-    const aleSafe: AleSafeFull = getAleSafeFileContent();
+    const aleSafe: AlesafeFull = getAleSafeFileContent();
 
     const allPws: Credential[] = [];
     for (const cred of aleSafe.credentials) {
@@ -50,10 +50,10 @@ export class AlesafeLoop {
 
   public getCredential(masterPassword: string, website: string): Credential {
     if (!this.securityHandler.authenticate(masterPassword)) {
-      throw new AleSafeError("invalid master password supplied");
+      throw new AlesafeError("invalid master password supplied");
     }
 
-    const aleSafe: AleSafeFull = getAleSafeFileContent();
+    const aleSafe: AlesafeFull = getAleSafeFileContent();
 
     const credential = aleSafe.credentials.find(
       (cred) => cred.website === website
@@ -71,19 +71,19 @@ export class AlesafeLoop {
       };
     }
 
-    throw new AleSafeError("no matching credentials for given webpage");
+    throw new AlesafeError("no matching credentials for given webpage");
   }
 
   public add(credential: Credential, masterPassword: string): void {
     if (!this.securityHandler.authenticate(masterPassword)) {
-      throw new AleSafeError("invalid master password supplied");
+      throw new AlesafeError("invalid master password supplied");
     }
     this.aleSafeManager.addPasswordEntry(credential, masterPassword);
   }
 
   public setup(masterPassword: string): void {
     if (isFirstRun()) {
-      const hashedConfig: AleSafeSecurity =
+      const hashedConfig: AlesafeSecurity =
         this.securityHandler.setupMasterPassword(masterPassword);
 
       setupAlesafeConfig(hashedConfig);

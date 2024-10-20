@@ -8,16 +8,16 @@ import {
 } from "crypto";
 import { getAleSafeFileContent } from "../detector/filedetector.js";
 import type {
-  AleSafeFull,
-  AleSafeSecurity,
+  AlesafeFull,
+  AlesafeSecurity,
   Credential,
-} from "../models/AleSafeTypes.js";
+} from "../models/alesafeTypes.js";
 
 export class AleSafeSecurityService {
   private readonly iterationCount: number = 1000;
 
   public authenticate(userInputPassword: string): boolean {
-    const alesafeConfig: AleSafeFull = getAleSafeFileContent();
+    const alesafeConfig: AlesafeFull = getAleSafeFileContent();
     const hashedInput = this.generateHash(
       userInputPassword,
       alesafeConfig.aleSafeSecurity.salt
@@ -30,7 +30,7 @@ export class AleSafeSecurityService {
   public readCredentialPassword(
     cred: Credential,
     mPw: string,
-    secConf: AleSafeSecurity
+    secConf: AlesafeSecurity
   ): string {
     const key: Buffer = this.getEncryptionKey(mPw, secConf);
     return this.decryptPassword(cred.password, key);
@@ -40,14 +40,14 @@ export class AleSafeSecurityService {
   public setupCredentialPassword(
     credentialPassword: string,
     mPw: string,
-    secConf: AleSafeSecurity
+    secConf: AlesafeSecurity
   ): string {
     const key: Buffer = this.getEncryptionKey(mPw, secConf);
     return this.encryptPassword(credentialPassword, key);
   }
 
   // Purpose: Generates salt + hashes the inputted password.
-  public setupMasterPassword(userInputPassword: string): AleSafeSecurity {
+  public setupMasterPassword(userInputPassword: string): AlesafeSecurity {
     const salt: string = this.generateSalt();
     const masterPasswordHash: string = this.generateHash(
       userInputPassword,
@@ -58,13 +58,13 @@ export class AleSafeSecurityService {
       masterPasswordHash,
       salt,
       iterationCount: this.iterationCount,
-    } as AleSafeSecurity;
+    } as AlesafeSecurity;
   }
 
   // Purpose: Uses the master password to derive an encryption key
   private getEncryptionKey(
     masterPasswordInput: string,
-    secConf: AleSafeSecurity
+    secConf: AlesafeSecurity
   ): Buffer {
     return pbkdf2Sync(
       masterPasswordInput,

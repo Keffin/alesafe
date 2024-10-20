@@ -1,4 +1,4 @@
-import type { Credential } from "../models/AleSafeTypes.js";
+import type { Credential } from "../models/alesafeTypes.js";
 import chalk from "chalk";
 
 export abstract class BaseCommand {

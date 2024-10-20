@@ -1,4 +1,4 @@
-export class AleSafeError extends Error {
+export class AlesafeError extends Error {
   constructor(msg: string) {
     super(msg);
   }

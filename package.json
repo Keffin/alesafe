@@ -15,8 +15,7 @@
     "build": "tsc",
     "start-dev": "ts-node --files index.ts",
     "lint": "eslint '**/*.{js,ts}' --fix",
-    "dev": "node -r ts-node/register index.ts",
-    "dev-new": "npx tsc && node dist/index.js",
+    "dev": "npx tsc && node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

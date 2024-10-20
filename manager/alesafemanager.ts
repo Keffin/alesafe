@@ -1,4 +1,4 @@
-import type { AleSafeFull, Credential } from "../models/AleSafeTypes.js";
+import type { AlesafeFull, Credential } from "../models/alesafeTypes.js";
 import fs from "fs";
 import { AleSafeSecurityService } from "../security/security.js";
 import {
@@ -18,7 +18,7 @@ export class AleSafeManager {
   }
 
   private writeEntry(credentialToAdd: Credential, mPw: string): void {
-    const aleSafeConfig: AleSafeFull = getAleSafeFileContent();
+    const aleSafeConfig: AlesafeFull = getAleSafeFileContent();
 
     if (this.isDuplicate(credentialToAdd, aleSafeConfig)) {
       return;
@@ -44,7 +44,7 @@ export class AleSafeManager {
 
   private isDuplicate(
     credentialsToAdd: Credential,
-    aleSafeConfig: AleSafeFull
+    aleSafeConfig: AlesafeFull
   ): boolean {
     for (const cred of aleSafeConfig.credentials) {
       if (cred.website === credentialsToAdd.website) {

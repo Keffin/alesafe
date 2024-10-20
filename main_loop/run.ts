@@ -4,11 +4,11 @@ import { Get } from "../commands/get.js";
 import { List } from "../commands/list.js";
 import { Setup } from "../commands/setup.js";
 import { AleSafeManager } from "../manager/alesafemanager.js";
-import { AleSafeError } from "../models/AleSafeError.js";
+import { AlesafeError } from "../models/alesafeError.js";
 import { AleSafeSecurityService } from "../security/security.js";
 import { AlesafeLoop } from "./alesafeloop.js";
 import chalk from "chalk";
-import pkg from "../package.json" with { type: "json" };
+import { createRequire } from "module";
 import { Mux } from "../commands/mux.js";
 
 const sec: AleSafeSecurityService = new AleSafeSecurityService();
@@ -20,6 +20,8 @@ const getCmd: Get = new Get();
 const setupCmd: Setup = new Setup();
 const addCmd: Add = new Add();
 const muxCmd: Mux = new Mux();
+
+const pkg = createRequire(import.meta.url)("../../package.json")
 
 program
   .name("Alesafe")
@@ -55,7 +57,7 @@ program
       const [website, username, pass] = await listCmd.selectPw(creds);
       listCmd.render({ website, username, password: pass });
     } catch (error) {
-      if (error instanceof AleSafeError) {
+      if (error instanceof AlesafeError) {
         console.log(chalk.red(`✖ ${error.message}`));
         return;
       }
@@ -72,7 +74,7 @@ program
       const cred = aleSafeLoop.getCredential(credRes[1], credRes[0]);
       getCmd.render(cred);
     } catch (error) {
-      if (error instanceof AleSafeError) {
+      if (error instanceof AlesafeError) {
         console.log(chalk.red(`✖ ${error.message}`));
         return;
       }
