@@ -1,4 +1,5 @@
 import fs from "fs";
+import fsasync from "fs/promises";
 import path from "path";
 import os from "os";
 import type { AlesafeFull, AlesafeSecurity } from "../models/alesafeTypes.js";
@@ -21,16 +22,16 @@ function isFirstRun(): boolean {
 }
 
 // Purpose: Fetches the file and reads it into our type.
-function getAleSafeFileContent(): AlesafeFull {
-  const file: string = getAlesafeFile();
+async function getAleSafeFileContent(): Promise<AlesafeFull> {
+  const file: string = await getAlesafeFile();
   const content: string = fs.readFileSync(file).toString();
 
   return JSON.parse(content) as AlesafeFull;
 }
 
 // Public method for fetching the alesafe file path.
-function getAlesafeFile(): string {
-  const fetchedFiled: [string, boolean] = fetchFile();
+async function getAlesafeFile(): Promise<string> {
+  const fetchedFiled: [string, boolean] = await fetchFile();
 
   if (!fetchedFiled[1]) {
     throw new AlesafeError(fetchedFiled[0]);
@@ -53,7 +54,7 @@ function getFiles(): string[] {
 
 function setupAlesafeConfig(aleSafeSecurityConfig: AlesafeSecurity): void {
   console.log(
-    "Seems like you are missing the config needed...setting it up..."
+    "Seems like you are missing the config needed...setting it up...",
   );
 
   const alesafeDir = path.join(HOME_DIR, ALESAFE_DIR_NAME);
@@ -63,7 +64,7 @@ function setupAlesafeConfig(aleSafeSecurityConfig: AlesafeSecurity): void {
   } catch (err) {
     if (err instanceof Error) {
       if (err.message.includes("file already exists")) {
-        console.log("Directory already exists...skipping mkdir")
+        console.log("Directory already exists...skipping mkdir");
       }
     }
   }
@@ -81,13 +82,17 @@ function setupAlesafeConfig(aleSafeSecurityConfig: AlesafeSecurity): void {
   fs.writeFileSync(alesafeJson, JSON.stringify(fileContent, null, 2));
 }
 
-function fetchFile(): [string, boolean] {
+async function fetchFile(): Promise<[string, boolean]> {
   const hiddenDirPath: string = path.join(HOME_DIR, ALESAFE_DIR_NAME);
+  const exists = await fileExists(hiddenDirPath);
+  const isDir = fsasync
+    .stat(hiddenDirPath)
+    .then((res) => res.isDirectory())
+    .catch(() => {
+      return false;
+    });
 
-  if (
-    !fs.existsSync(hiddenDirPath) ||
-    !fs.statSync(hiddenDirPath).isDirectory()
-  ) {
+  if (!exists || !isDir) {
     return [
       `The directory ${ALESAFE_DIR_NAME} does not exist. Create it by running alesafe setup`,
       false,
@@ -95,7 +100,7 @@ function fetchFile(): [string, boolean] {
   }
 
   const fp: string = path.join(hiddenDirPath, ALESAFE_FILE_NAME);
-  if (!fs.existsSync(fp)) {
+  if (!fileExists(fp)) {
     return [
       `Filename: ${ALESAFE_FILE_NAME} not found at ${ALESAFE_DIR_NAME}. Create it by running alesafe setup`,
       false,
@@ -103,6 +108,15 @@ function fetchFile(): [string, boolean] {
   }
 
   return [fp, true];
+}
+
+async function fileExists(fp: string): Promise<boolean> {
+  try {
+    await fsasync.access(fp);
+    return true;
+  } catch (err) {
+    return false;
+  }
 }
 
 export {

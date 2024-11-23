@@ -10,8 +10,8 @@ import type { AlesafeSecurity, Credential } from "../models/alesafeTypes.js";
 
 const ITERATION_COUNT = 1000;
 
-export const authenticate = (incomingPw: string): boolean => {
-  const alesafeConfig = getAleSafeFileContent();
+export const authenticate = async (incomingPw: string): Promise<boolean> => {
+  const alesafeConfig = await getAleSafeFileContent();
   const hashed = generateHash(incomingPw, alesafeConfig.aleSafeSecurity.salt);
 
   return alesafeConfig.aleSafeSecurity.masterPasswordHash === hashed;

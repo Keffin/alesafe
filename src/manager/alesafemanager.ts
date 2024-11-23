@@ -15,7 +15,7 @@ export class AleSafeManager {
     credentialToAdd: Credential,
     mPw: string,
   ): Promise<void> {
-    const aleSafeConfig: AlesafeFull = getAleSafeFileContent();
+    const aleSafeConfig: AlesafeFull = await getAleSafeFileContent();
 
     if (this.isDuplicate(credentialToAdd, aleSafeConfig)) {
       return;
@@ -36,7 +36,10 @@ export class AleSafeManager {
 
     // TODO: Handle `getAleSafeFile()` failure.
 
-    fs.writeFileSync(getAlesafeFile(), JSON.stringify(aleSafeConfig, null, 2));
+    fs.writeFileSync(
+      await getAlesafeFile(),
+      JSON.stringify(aleSafeConfig, null, 2),
+    );
   }
 
   private isDuplicate(

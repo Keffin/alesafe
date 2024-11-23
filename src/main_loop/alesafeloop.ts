@@ -30,7 +30,7 @@ export class AlesafeLoop {
       throw new AlesafeError("invalid master password supplied");
     }
 
-    const aleSafe: AlesafeFull = getAleSafeFileContent();
+    const aleSafe: AlesafeFull = await getAleSafeFileContent();
 
     const allPws: Credential[] = [];
     for (const cred of aleSafe.credentials) {
@@ -55,7 +55,7 @@ export class AlesafeLoop {
       throw new AlesafeError("invalid master password supplied");
     }
 
-    const aleSafe: AlesafeFull = getAleSafeFileContent();
+    const aleSafe: AlesafeFull = await getAleSafeFileContent();
 
     const credential = aleSafe.credentials.find(
       (cred) => cred.website === website,
