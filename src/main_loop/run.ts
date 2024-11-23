@@ -88,7 +88,7 @@ program
   .description("Sets up your AleSafe config.")
   .action(async () => {
     const pw = await setupCmd.run();
-    aleSafeLoop.setup(pw.masterPw);
+    await aleSafeLoop.setup(pw.masterPw);
   });
 
 program
@@ -110,7 +110,6 @@ program
   )
   .action(async () => {
     const cred = await addCmd.run();
-
     aleSafeLoop.add(
       {
         website: cred.website,

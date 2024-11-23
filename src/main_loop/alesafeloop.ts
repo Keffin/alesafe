@@ -76,23 +76,28 @@ export class AlesafeLoop {
     throw new AlesafeError("no matching credentials for given webpage");
   }
 
-  public add(credential: Credential, masterPassword: string): void {
-    if (!authenticate(masterPassword)) {
+  public async add(
+    credential: Credential,
+    masterPassword: string,
+  ): Promise<void> {
+    const authenticated = await authenticate(masterPassword);
+    if (!authenticated) {
       throw new AlesafeError("invalid master password supplied");
     }
     this.aleSafeManager.addPasswordEntry(credential, masterPassword);
   }
 
-  public setup(masterPassword: string): void {
-    if (isFirstRun()) {
+  public async setup(masterPassword: string): Promise<void> {
+    const isFirst = await isFirstRun();
+    if (isFirst) {
       const hashedConfig: AlesafeSecurity = setupMasterPassword(masterPassword);
-
-      setupAlesafeConfig(hashedConfig);
+      await setupAlesafeConfig(hashedConfig);
       return;
+    } else {
+      console.log(
+        chalk.yellow("⚠ your AleSafe config already exists, exiting..."),
+      );
     }
-    console.log(
-      chalk.yellow("⚠ your AleSafe config already exists, exiting..."),
-    );
   }
 
   public setupMux() {
