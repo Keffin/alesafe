@@ -4,25 +4,27 @@ import {
   getAlesafeFile,
   getAleSafeFileContent,
 } from "../detector/filedetector.js";
-import {setupCredentialPassword} from "../security/security.js";
+import { setupCredentialPassword } from "../security/security.js";
 
 export class AleSafeManager {
-
   public addPasswordEntry(credentialToAdd: Credential, mPw: string) {
     this.writeEntry(credentialToAdd, mPw);
   }
 
-  private writeEntry(credentialToAdd: Credential, mPw: string): void {
+  private async writeEntry(
+    credentialToAdd: Credential,
+    mPw: string,
+  ): Promise<void> {
     const aleSafeConfig: AlesafeFull = getAleSafeFileContent();
 
     if (this.isDuplicate(credentialToAdd, aleSafeConfig)) {
       return;
     }
 
-    const encryptPw = setupCredentialPassword(
+    const encryptPw = await setupCredentialPassword(
       credentialToAdd.password,
       mPw,
-      aleSafeConfig.aleSafeSecurity
+      aleSafeConfig.aleSafeSecurity,
     );
 
     const encryptedCredentials: Credential = {
@@ -39,7 +41,7 @@ export class AleSafeManager {
 
   private isDuplicate(
     credentialsToAdd: Credential,
-    aleSafeConfig: AlesafeFull
+    aleSafeConfig: AlesafeFull,
   ): boolean {
     for (const cred of aleSafeConfig.credentials) {
       if (cred.website === credentialsToAdd.website) {

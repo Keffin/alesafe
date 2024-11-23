@@ -12,18 +12,20 @@ import type {
   AlesafeSecurity,
   Credential,
 } from "../models/alesafeTypes.js";
-import {authenticate, readCredentialPassword, setupMasterPassword} from "../security/security.js";
+import {
+  authenticate,
+  readCredentialPassword,
+  setupMasterPassword,
+} from "../security/security.js";
 
 export class AlesafeLoop {
   private aleSafeManager: AleSafeManager;
 
-  constructor(
-    aleSafeManager: AleSafeManager
-  ) {
+  constructor(aleSafeManager: AleSafeManager) {
     this.aleSafeManager = aleSafeManager;
   }
 
-  public getAllCredentials(pw: string): Credential[] {
+  public async getAllCredentials(pw: string): Promise<Credential[]> {
     if (!authenticate(pw)) {
       throw new AlesafeError("invalid master password supplied");
     }
@@ -35,17 +37,20 @@ export class AlesafeLoop {
       allPws.push({
         website: cred.website,
         username: cred.username,
-        password: readCredentialPassword(
+        password: await readCredentialPassword(
           cred,
           pw,
-          aleSafe.aleSafeSecurity
+          aleSafe.aleSafeSecurity,
         ),
       });
     }
     return allPws;
   }
 
-  public getCredential(masterPassword: string, website: string): Credential {
+  public async getCredential(
+    masterPassword: string,
+    website: string,
+  ): Promise<Credential> {
     if (!authenticate(masterPassword)) {
       throw new AlesafeError("invalid master password supplied");
     }
@@ -53,17 +58,17 @@ export class AlesafeLoop {
     const aleSafe: AlesafeFull = getAleSafeFileContent();
 
     const credential = aleSafe.credentials.find(
-      (cred) => cred.website === website
+      (cred) => cred.website === website,
     );
 
     if (credential) {
       return {
         website: website,
         username: credential.username,
-        password: readCredentialPassword(
+        password: await readCredentialPassword(
           credential,
           masterPassword,
-          aleSafe.aleSafeSecurity
+          aleSafe.aleSafeSecurity,
         ),
       };
     }
@@ -80,15 +85,14 @@ export class AlesafeLoop {
 
   public setup(masterPassword: string): void {
     if (isFirstRun()) {
-      const hashedConfig: AlesafeSecurity =
-        setupMasterPassword(masterPassword);
+      const hashedConfig: AlesafeSecurity = setupMasterPassword(masterPassword);
 
       setupAlesafeConfig(hashedConfig);
       return;
     }
     console.log(
-        chalk.yellow("⚠ your AleSafe config already exists, exiting...")
-      );
+      chalk.yellow("⚠ your AleSafe config already exists, exiting..."),
+    );
   }
 
   public setupMux() {

@@ -4,7 +4,7 @@ import {BaseCommand, type BaseResult} from "./basecmd.js";
 export interface GetResult extends BaseResult{
   website: string,
   password: string,
-};
+}
 
 export class Get extends BaseCommand {
   public async run(): Promise<GetResult> {

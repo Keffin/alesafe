@@ -19,7 +19,7 @@ const setupCmd: Setup = new Setup();
 const addCmd: Add = new Add();
 const muxCmd: Mux = new Mux();
 
-const pkg = createRequire(import.meta.url)("../../../package.json")
+const pkg = createRequire(import.meta.url)("../../../package.json");
 
 program
   .name("Alesafe")
@@ -34,13 +34,13 @@ program
     try {
       const { all } = options;
       const pw = await listCmd.run();
-      const creds = aleSafeLoop.getAllCredentials(pw.masterPw);
+      const creds = await aleSafeLoop.getAllCredentials(pw.masterPw);
 
       if (creds.length === 0) {
         console.log(
           chalk.yellow(
-            "You have no saved passwords yet. Run add command to setup."
-          )
+            "You have no saved passwords yet. Run add command to setup.",
+          ),
         );
         return;
       }
@@ -69,7 +69,10 @@ program
   .action(async () => {
     try {
       const credRes = await getCmd.run();
-      const cred = aleSafeLoop.getCredential(credRes.password, credRes.website);
+      const cred = await aleSafeLoop.getCredential(
+        credRes.password,
+        credRes.website,
+      );
       getCmd.render(cred);
     } catch (error) {
       if (error instanceof AlesafeError) {
@@ -103,7 +106,7 @@ program
 program
   .command("add")
   .description(
-    "Encrypts and saves a new password, given a valid master password"
+    "Encrypts and saves a new password, given a valid master password",
   )
   .action(async () => {
     const cred = await addCmd.run();
@@ -114,7 +117,7 @@ program
         username: cred.username,
         password: cred.password,
       },
-      cred.masterPw
+      cred.masterPw,
     );
   });
 // TODO: Also add some update command.
