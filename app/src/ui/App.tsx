@@ -1,35 +1,24 @@
 import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
 import "./App.css";
+import { AlesafeFullElectron } from "../../types";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [alesafeSec, setAlesafeSec] = useState<AlesafeFullElectron>();
 
   useEffect(() => {
     // @ts-expect-error ignore
-    //window.electron.getFile((d) => console.log(d));
-    window.electron.getContent((r) => console.log(r));
+    window.electron.getContent((r) => setAlesafeSec(r));
   }, []);
 
+  if (!alesafeSec) {
+    console.log("in here");
+    return <div>Loading...</div>;
+  }
+
+  const c1 = alesafeSec.credentials[0];
   return (
     <>
-      <div>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + Reacdfaa f</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <div>{c1.username}</div>
     </>
   );
 }

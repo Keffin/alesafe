@@ -17,15 +17,12 @@ export async function getContent(fName: string, mainWindow: BrowserWindow) {
   mainWindow.webContents.send("content", asJson);
 }
 
-export async function getAlesafeFile(
-  mainWindow: BrowserWindow,
-): Promise<string> {
+export async function getAlesafeFile(): Promise<string> {
   const fetchedFile: [string, boolean] = await fetchFile();
   if (!fetchedFile[1]) {
     throw new Error(fetchedFile[0]);
   }
 
-  mainWindow.webContents.send("file", { c: fetchedFile[0] });
   return fetchedFile[0];
 }
 

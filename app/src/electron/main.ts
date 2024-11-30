@@ -17,8 +17,8 @@ app.on("ready", async () => {
     mainWindow.loadFile(path.join(app.getAppPath(), "/dist-react/index.html"));
   }
 
+  const filePath = await getAlesafeFile();
   ipcMain.on("renderer-ready", async () => {
-    const x = await getAlesafeFile(mainWindow);
-    await getContent(x, mainWindow);
+    await getContent(filePath, mainWindow);
   });
 });
