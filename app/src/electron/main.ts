@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain } from "electron";
 import path from "path";
 import { getAlesafeFile, getContent, isDev } from "./util.js";
 import { getPreloadPath } from "./pathResolver.js";
+import { validatePassword } from "./validation.js";
 
 app.on("ready", async () => {
   const mainWindow = new BrowserWindow({
@@ -22,5 +23,9 @@ app.on("ready", async () => {
   const filePath = await getAlesafeFile();
   ipcMain.on("renderer-ready", async () => {
     await getContent(filePath, mainWindow);
+  });
+
+  ipcMain.handle("hashResult", async (_, { input, sec }) => {
+    return await validatePassword(input, sec, mainWindow);
   });
 });
