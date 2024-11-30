@@ -1,12 +1,12 @@
 export type AlesafeFullElectron = {
-  security: SecurityUI;
+  aleSafeSecurity: SecurityUI;
   credentials: CredentialsUI[];
 };
 
 export type SecurityUI = {
-  massPasswordHash: string;
-  salt: string;
   iterationCount: number;
+  masterPasswordHash: string;
+  salt: string;
 };
 
 export type CredentialsUI = {
@@ -14,10 +14,3 @@ export type CredentialsUI = {
   username: string;
   password: string;
 };
-
-interface Window {
-  electron: {
-    getContent: () => Promise<AlesafeFullElectron>;
-    //getFile: () => Promise<string>;
-  };
-}

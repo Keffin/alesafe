@@ -8,4 +8,11 @@ electron.contextBridge.exposeInMainWorld("electron", {
 
     electron.ipcRenderer.send("renderer-ready");
   },
+  getPwCalculationResult: (cb: (s: unknown) => void) => {
+    electron.ipcRenderer.on("hashResult", (_, res) => {
+      cb(res);
+    });
+  },
+  getPwFromClient: (input: unknown, sec: unknown) =>
+    electron.ipcRenderer.invoke("hashResult", { input, sec }),
 });
