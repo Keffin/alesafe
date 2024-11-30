@@ -15,4 +15,13 @@ electron.contextBridge.exposeInMainWorld("electron", {
   },
   getPwFromClient: (input: unknown, sec: unknown) =>
     electron.ipcRenderer.invoke("hashResult", { input, sec }),
+
+  getDec: (input: unknown, sec: unknown, cred: unknown) =>
+    electron.ipcRenderer.invoke("parsePassword", { input, sec, cred }),
+
+  getDecryptResult: (cb: (s: unknown) => void) => {
+    electron.ipcRenderer.on("parsePassword", (_, res) => {
+      cb(res);
+    });
+  },
 });

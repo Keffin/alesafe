@@ -8,11 +8,15 @@ export function Login() {
   const [submittedMasterPw, setSubmittedMasterPw] = useState<string>("");
   const [actualSec, setActualSec] = useState<SecurityUI | undefined>(undefined);
   const [successfulAuth, setSuccessfulAuth] = useState<boolean>(false);
+  const [alesafeFull, setAlesafeFull] = useState<
+    AlesafeFullElectron | undefined
+  >(undefined);
 
   useEffect(() => {
     // @ts-expect-error ignore
     window.electron.getContent((c: AlesafeFullElectron) => {
       setActualSec(c.aleSafeSecurity);
+      setAlesafeFull(c);
     });
   }, []);
 
@@ -28,10 +32,27 @@ export function Login() {
         setSuccessfulAuth(true);
       }
     });
+
+    //const x = alesafeFull?.credentials[0].password;
+    for (const x of alesafeFull?.credentials) {
+      // @ts-expect-error ignore
+      window.electron.getDec(
+        submittedMasterPw,
+        alesafeFull?.aleSafeSecurity,
+        x,
+      );
+    }
+
+    // @ts-expect-error ignore
+    window.electron.getDecryptResult((c) => {
+      console.log(c);
+    });
   }
 
-  if (successfulAuth) {
-    return <div>Valid pw!</div>;
+  if (successfulAuth && alesafeFull !== undefined) {
+    // TODO: Return new component with parsed passwords
+    // Something like:
+    //return <ValidPw alesafe={alesafeFull} mPw={submittedMasterPw} />;
   }
 
   return (
